@@ -2,8 +2,8 @@
   "name": "d-secure",
   "version": "0.1.0",
   "private": true,
-  "homepage": "./",
-  "main": "./main.js",
+  "homepage": ".",
+  "main": "build/electron/main.js",
   "dependencies": {
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
@@ -14,6 +14,7 @@
     "react-toastify": "^8.0.3",
     "semantic-ui-css": "^2.4.1",
     "semantic-ui-react": "^2.0.4",
+    "electron-is-dev": "^2.0.0",
     "web-vitals": "^1.1.2"
   },
   "scripts": {
@@ -21,13 +22,30 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "ebuild": "npm run build && node_modules/.bin/build",
-    "dev": "concurrently \"npm start\" \"wait-on http://localhost:3000 && nodemon --exec electron .\""
+    "build-electron": "robocopy electron build/electron /S & robocopy Code build/Code /S",
+    "package": "electron-builder build --win -c.extraMetadata.main=build/electron/main.js --publish never",
+    "dev": "concurrently \"npm start\" \"wait-on http://localhost:3000 && nodemon --exec electron electron/main.js\""
   },
   "eslintConfig": {
     "extends": [
       "react-app",
       "react-app/jest"
+    ]
+  },
+  "build": {
+    "appId": "in.rajattyagi.dsec",
+    "win": {
+      "target": "nsis",
+      "icon": "build/icon.ico"
+    },
+    "nsis": {
+      "allowToChangeInstallationDirectory": true,
+      "oneClick": false
+    },
+    "extends": null,
+    "files": [
+      "build/**/*",
+      "node_modules/**/*"
     ]
   },
   "browserslist": {
@@ -46,7 +64,6 @@
     "concurrently": "^6.3.0",
     "electron": "^15.2.0",
     "electron-builder": "^22.13.1",
-    "electron-is-dev": "^2.0.0",
     "nodemon": "^2.0.13",
     "wait-on": "^6.0.0"
   }

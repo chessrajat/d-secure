@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Card, Checkbox, Input, Message } from "semantic-ui-react";
+import { Button, Checkbox, Input } from "semantic-ui-react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 const { ipcRenderer } = window.require("electron");
@@ -88,7 +88,9 @@ function App() {
           type="file"
           className="input-file"
           onChange={(e) => {
-            setFilePath(e.target.files[0].path);
+            e.target.files[0]
+              ? setFilePath(e.target.files[0].path)
+              : toast.error("Please select a file");
           }}
         />
       </div>
